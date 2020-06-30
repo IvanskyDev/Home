@@ -1,0 +1,84 @@
+Este artículo se aplica a: ✔️ SDK de .NET Core 2.x y versiones posteriores
+
+NOMBRE
+dotnet add package: agrega una referencia de paquete a un archivo del proyecto.
+
+Sinopsis
+.NET Core CLI
+
+Copy
+
+dotnet add [<PROJECT>] package <PACKAGE_NAME>
+    [-f|--framework <FRAMEWORK>] [--interactive]
+    [-n|--no-restore] [--package-directory <PACKAGE_DIRECTORY>]
+    [-s|--source <SOURCE>] [-v|--version <VERSION>]
+
+dotnet add package -h|--help
+
+Descripción
+El comando dotnet add package constituye una opción práctica para agregar una referencia de paquete a un archivo del proyecto. Después de ejecutar el comando, existe una comprobación de compatibilidad para garantizar que el paquete es compatible con los marcos del proyecto. Si se pasa la comprobación, un elemento <PackageReference> se agrega al archivo del proyecto y dotnet restore se ejecuta.
+Por ejemplo, si agrega Newtonsoft.Json a ToDo.csproj se producirá un resultado similar al del siguiente ejemplo:
+Console
+
+Copy
+
+Writing C:\Users\me\AppData\Local\Temp\tmp95A8.tmp
+info : Adding PackageReference for package 'Newtonsoft.Json' into project 'C:\projects\ToDo\ToDo.csproj'.
+log  : Restoring packages for C:\Temp\projects\consoleproj\consoleproj.csproj...
+info :   GET https://api.nuget.org/v3-flatcontainer/newtonsoft.json/index.json
+info :   OK https://api.nuget.org/v3-flatcontainer/newtonsoft.json/index.json 79ms
+info :   GET https://api.nuget.org/v3-flatcontainer/newtonsoft.json/12.0.1/newtonsoft.json.12.0.1.nupkg
+info :   OK https://api.nuget.org/v3-flatcontainer/newtonsoft.json/12.0.1/newtonsoft.json.12.0.1.nupkg 232ms
+log  : Installing Newtonsoft.Json 12.0.1.
+info : Package 'Newtonsoft.Json' is compatible with all the specified frameworks in project 'C:\projects\ToDo\ToDo.csproj'.
+info : PackageReference for package 'Newtonsoft.Json' version '12.0.1' added to file 'C:\projects\ToDo\ToDo.csproj'.
+El archivo ToDo.csproj contiene ahora un elemento <PackageReference> para el paquete al que hace referencia.
+XML
+
+Copy
+
+<PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+
+Restauración implícita
+No es necesario ejecutar dotnet restore porque lo ejecutan implícitamente todos los comandos que necesitan que se produzca una restauración, como dotnet new, dotnet build, dotnet run, dotnet test, dotnet publish y dotnet pack. Para deshabilitar la restauración implícita, use la opción --no-restore.
+El comando dotnet restore sigue siendo válido en algunos escenarios donde tiene sentido realizar una restauración explícita, como las compilaciones de integración continua en Azure DevOps Services o en los sistemas de compilación que necesitan controlar explícitamente cuándo se produce la restauración.
+Para obtener información sobre cómo administrar fuentes de NuGet, vea la documentación de dotnet restore.
+
+Argumentos
+PROJECT
+Especifica el archivo del proyecto. Si no se especifica, el comando busca uno en el directorio actual.
+PACKAGE_NAME
+La referencia de paquete que se va a agregar.
+
+Opciones
+-f|--framework <FRAMEWORK>
+Agrega una referencia de paquete solo cuando se destina a un marco específico.
+-h|--help
+Imprime una corta ayuda para el comando.
+--interactive
+Permite que el comando se detenga y espere la entrada o acción del usuario (por ejemplo, completar la autenticación). Disponible desde el SDK de .NET Core 2.1, versión 2.1.400 o posterior.
+-n|--no-restore
+Agrega una referencia de paquete sin realizar una vista previa de restauración y una comprobación de compatibilidad.
+--package-directory <PACKAGE_DIRECTORY>
+Directorio donde quiere restaurar los paquetes. La ubicación predeterminada de restauración de paquetes es %userprofile%\.nuget\packages en Windows y ~/.nuget/packages en macOS y Linux. Para obtener más información, vea Administración de las carpetas de paquetes globales, de caché y temporales in NuGet.
+-s|--source <SOURCE>
+URI del origen del paquete NuGet que se usará durante la operación de restauración.
+-v|--version <VERSION>
+Versión del paquete. Consulte NuGet package versioning (Control de versiones de paquetes NuGet).
+
+Ejemplos
+Agregar un paquete de NuGet Newtonsoft.Json a un proyecto:
+.NET Core CLI
+
+Copy
+
+dotnet add package Newtonsoft.Json
+Agregar una versión específica de un paquete a un proyecto:
+.NET Core CLI
+
+Copy
+
+dotnet add ToDo.csproj package Microsoft.Azure.DocumentDB.Core -v 1.0.0
+Agregar un paquete con un origen de NuGet específico:
+.NET Core CLI
+
